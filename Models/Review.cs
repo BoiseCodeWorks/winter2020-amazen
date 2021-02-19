@@ -10,5 +10,6 @@ namespace AmaZen.Models
     [Range(1, 5)]
     public int Rating { get; set; }
     public int ProductId { get; set; }
+    public Product Product { get; set; }
   }
 }

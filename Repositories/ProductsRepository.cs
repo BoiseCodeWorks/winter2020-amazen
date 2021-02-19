@@ -17,27 +17,47 @@ namespace AmaZen.Repositories
 
     internal IEnumerable<Product> GetAll()
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM products;";
+      return _db.Query<Product>(sql);
     }
 
     internal Product GetById(int id)
     {
-      throw new NotImplementedException();
+      string sql = "SELECT * FROM products WHERE id = @id;";
+      return _db.QueryFirstOrDefault<Product>(sql, new { id });
     }
 
     internal Product Create(Product newProduct)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      INSERT INTO products
+      (title, description, price)
+      VALUES
+      (@Title, @Description, @Price);
+      SELECT LAST_INSERT_ID();
+      ";
+      int id = _db.ExecuteScalar<int>(sql, newProduct);
+      newProduct.Id = id;
+      return newProduct;
     }
 
     internal Product Edit(Product update)
     {
-      throw new NotImplementedException();
+      string sql = @"
+      UPDATE FROM products
+      SET
+       description = @Description,
+       title = @Title,
+       price = @Price
+      WHERE id = @Id";
+      _db.Execute(sql, update);
+      return update;
     }
 
     internal void Delete(int id)
     {
-      throw new NotImplementedException();
+      string sql = "DELETE FROM products WHERE id = @id LIMIT 1";
+      _db.Execute(sql, new { id });
     }
   }
 }

@@ -24,6 +24,13 @@ namespace AmaZen.Services
       return data;
     }
 
+    internal IEnumerable<Review> GetByProductId(int id)
+    {
+      IEnumerable<Review> data = _repo.GetByProductId(id);
+      return data;
+    }
+
+
     internal Review Create(Review newProd)
     {
       return _repo.Create(newProd);
@@ -31,15 +38,15 @@ namespace AmaZen.Services
 
     internal Review Edit(Review updated)
     {
-      // REVIEW
       var data = GetById(updated.Id);
       updated.Body = updated.Body != null ? updated.Body : data.Body;
       updated.Title = updated.Title != null && updated.Title.Length > 2 ? updated.Title : data.Title;
+      updated.Rating = updated.Rating != 0 ? updated.Rating : data.Rating;
       return _repo.Edit(updated);
     }
     internal string Delete(int id)
     {
-      var data = GetById(id);
+      GetById(id);
       _repo.Delete(id);
       return "delorted";
     }

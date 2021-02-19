@@ -13,10 +13,12 @@ namespace AmaZen.Controllers
   public class ProductsController : ControllerBase
   {
     private readonly ProductsService _service;
+    private readonly ReviewsService _reviewsService;
 
-    public ProductsController(ProductsService ps)
+    public ProductsController(ProductsService ps, ReviewsService rs)
     {
       _service = ps;
+      _reviewsService = rs;
     }
 
     [HttpGet]
@@ -38,6 +40,20 @@ namespace AmaZen.Controllers
       try
       {
         return Ok(_service.GetById(id));
+      }
+      catch (Exception e)
+      {
+        return BadRequest(e.Message);
+      }
+    }
+
+    [HttpGet("{id}/reviews")]
+    public ActionResult<IEnumerable<Review>> GetReviews(int id)
+    {
+      try
+      {
+        IEnumerable<Review> data = _reviewsService.GetByProductId(id);
+        return Ok(data);
       }
       catch (Exception e)
       {
